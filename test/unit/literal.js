@@ -14,9 +14,9 @@ describe('literal test',function(){
     ast = Parser.parse(sql);
     //inspect(ast.columns);
     ast.columns.should.eql([ 
-      { expr: { type: 'string', value: 'single str' }, as: '' },
-      { expr: { type: 'string', value: 'double string ' }, as: '' },
-      { expr: { type: 'string',value: ' escape \n \t \u0002' }, as: '' } 
+      { expr: { type: 'string', value: 'single str' }, as: null },
+      { expr: { type: 'string', value: 'double string ' }, as: null },
+      { expr: { type: 'string',value: ' escape \n \t \u0002' }, as: null } 
     ])
   });   
 
@@ -26,12 +26,12 @@ describe('literal test',function(){
     sql = "SELECT 1 ,2.5, -4.6, 1e2, 1e-10";
     ast = Parser.parse(sql);
     //inspect(ast.columns);
-    ast.columns.should.eql([ 
-      { expr: { type: 'number', value: 1 },     as: '' },
-      { expr: { type: 'number', value: 2.5 },   as: '' },
-      { expr: { type: 'number', value: -4.6 },  as: '' },
-      { expr: { type: 'number', value: 100 },   as: '' },
-      { expr: { type: 'number', value: 1e-10 }, as: '' } 
+    ast.columns.should.eql([
+      { expr: { type: 'number', value: 1 },     as: null },
+      { expr: { type: 'number', value: 2.5 },   as: null },
+      { expr: { type: 'number', value: -4.6 },  as: null },
+      { expr: { type: 'number', value: 100 },   as: null },
+      { expr: { type: 'number', value: 1e-10 }, as: null }
     ])
   });   
 
@@ -42,9 +42,9 @@ describe('literal test',function(){
     ast = Parser.parse(sql);
     //inspect(ast.columns);
     ast.columns.should.eql([ 
-      { expr: { type: 'bool', value: false },     as: '' },
-      { expr: { type: 'bool', value: true },      as: '' },
-      { expr: { type: 'null', value: null },      as: '' }
+      { expr: { type: 'bool', value: false },     as: null },
+      { expr: { type: 'bool', value: true },      as: null },
+      { expr: { type: 'null', value: null },      as: null }
     ])
   });   
 });

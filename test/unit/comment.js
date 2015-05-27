@@ -10,13 +10,13 @@ describe('comment test', function () {
 
     ast.should.be.eql({
       type: 'select',
-      distinct: '',
+      distinct: null,
       columns: '*',
-      from: [{ db: '', table: 't', as: '' }],
-      where: '',
-      groupby: '',
-      orderby: '',
-      limit: ''
+      from: [{ db: null, table: 't', as: null }],
+      where: null,
+      groupby: null,
+      orderby: null,
+      limit: null
     });
   });
 
@@ -28,13 +28,13 @@ describe('comment test', function () {
 
     ast.should.be.eql({
       type: 'select',
-      distinct: '',
+      distinct: null,
       columns: '*',
-      from: [{ db: '', table: 't', as: '' }],
-      where: '',
-      groupby: '',
-      orderby: '',
-      limit: ''
+      from: [{ db: null, table: 't', as: null }],
+      where: null,
+      groupby: null,
+      orderby: null,
+      limit: null
     });
   });
 });

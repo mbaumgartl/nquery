@@ -37,8 +37,8 @@ describe('column filter test', function(){
     //inspect(e);
     var e = {
       columns : [
-        {expr : idSel, as : ''},
-        {expr : typeSel, as : ''}
+        {expr : idSel, as : null},
+        {expr : typeSel, as : null}
       ]  
     };
 
@@ -118,12 +118,12 @@ describe('column filter test', function(){
     var e = {
       columns : [
         {expr : idSel, as : 'aaid'},
-        {expr : typeSel, as : ''}
+        {expr : typeSel, as : null}
       ]  
     };
-    var res = filter(rawData, e.columns); 
+    var res = filter(rawData, e.columns);
     res.columns.should.eql([
-        [{table : 'a', column : 'id'}, {table : '', column : 'aaid'}],
+        [{table : 'a', column : 'id'}, {table : null, column : 'aaid'}],
         [{table : 'b', column : 'type'}]
     ]);
   });
@@ -158,7 +158,7 @@ describe('column filter test', function(){
               value : 5
             }
           },
-          as : ''
+          as : null
         }
       ]  
     };
@@ -207,7 +207,7 @@ describe('column filter test', function(){
     res = filter(rawData, e.columns); 
     res.should.eql({
       columns : [
-        [{table : '', column : 'a.id + b.type'}, {table : '', column : 'id_type_add'}] 
+        [{table : null, column : 'a.id + b.type'}, {table : null, column : 'id_type_add'}]
       ],
       data : [
         [ 6 ], 

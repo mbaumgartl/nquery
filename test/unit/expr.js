@@ -2,7 +2,7 @@ var should = require('should');
 var Parser = require(__dirname + '/../../lib/parser');
 
 function inspect(obj) {
-  //console.log(require('util').inspect(obj, false, 10, true));
+  // console.log(require('util').inspect(obj, false, 10, true));
 }
 
 describe('expression test',function(){
@@ -13,29 +13,29 @@ describe('expression test',function(){
     it('should parse numbers', function () {
       ast = Parser.parse('SELECT 1');
       ast.columns.should.eql([
-        { expr: { type: 'number', value: 1 }, as: '' }
+        { expr: { type: 'number', value: 1 }, as: null }
       ]);
     });
 
     it('should parse strings', function () {
       ast = Parser.parse('SELECT \'str\'');
       ast.columns.should.eql([
-        { expr: { type: 'string', value: 'str' }, as: '' }
+        { expr: { type: 'string', value: 'str' }, as: null }
       ]);
     });
 
     it('should parse SQL keywords as columns', function () {
       ast = Parser.parse('SELECT `select`, "from" FROM t');
       ast.columns.should.eql([
-        { expr: { type: 'column_ref', column: 'select', table : '' }, as: '' },
-        { expr: { type: 'column_ref', column: 'from', table : '' }, as: '' }
+        { expr: { type: 'column_ref', column: 'select', table : null }, as: null },
+        { expr: { type: 'column_ref', column: 'from', table : null }, as: null }
       ]);
     });
 
     it('should parse boolean expressions', function () {
       ast = Parser.parse('SELECT true');
       ast.columns.should.eql([
-        { expr: { type: 'bool', value: true }, as: '' }
+        { expr: { type: 'bool', value: true }, as: null }
       ]);
     });
 
@@ -50,7 +50,7 @@ describe('expression test',function(){
             value : []
           }
         },
-        as: ''
+        as: null
       }]);
     });
 
@@ -65,7 +65,7 @@ describe('expression test',function(){
             value : [{ type: 'number', value: 4 }]
           }
         },
-        as: ''
+        as: null
       }]);
     });
 
@@ -78,43 +78,43 @@ describe('expression test',function(){
           left: { type: 'param', value: 'id' },
           right: { type: 'number', value: 1 }
         },
-        as: ''
+        as: null
       }]);
     });
 
     it('should parse hbase column names', function () {
       ast = Parser.parse('SELECT cf1:name');
-      ast.columns.should.eql([{ expr: { type: 'column_ref', table: '', column: 'cf1:name' }, as: '' }]);
+      ast.columns.should.eql([{ expr: { type: 'column_ref', table: null, column: 'cf1:name' }, as: null }]);
     });
 
     it('should parse query parameters', function () {
       ast = Parser.parse('SELECT :select');
-      ast.columns.should.eql([ { expr: { type: 'param', value: 'select' }, as: '' } ]);
+      ast.columns.should.eql([ { expr: { type: 'param', value: 'select' }, as: null } ]);
     });
 
     it('should parse quoted column aliases', function () {
       ast = Parser.parse("SELECT col1 AS \"select\", col2 AS 'alias with spaces'");
       ast.columns.should.eql([
-        { expr: { type: 'column_ref', table: '', column: 'col1' }, as: 'select' },
-        { expr: { type: 'column_ref', table: '', column: 'col2' }, as: 'alias with spaces' }
+        { expr: { type: 'column_ref', table: null, column: 'col1' }, as: 'select' },
+        { expr: { type: 'column_ref', table: null, column: 'col2' }, as: 'alias with spaces' }
       ]);
     });
 
     it('should parse sub-selects in column expressions', function () {
       ast = Parser.parse('SELECT \'string\', (SELECT col FROM t2) subSelect FROM t1');
       ast.columns.should.eql([
-        { expr: { type: 'string', value: 'string' }, as: '' },
+        { expr: { type: 'string', value: 'string' }, as: null },
         {
           expr: {
             paren: true,
             type: 'select',
-            distinct: '',
-            columns: [{ expr: {type: 'column_ref', table: '', column: 'col'}, as: '' }],
-            from: [{ db: '', table: 't2', as: '' }],
-            where: '',
-            groupby: '',
-            orderby: '',
-            limit: ''
+            distinct: null,
+            columns: [{ expr: {type: 'column_ref', table: null, column: 'col'}, as: null }],
+            from: [{ db: null, table: 't2', as: null }],
+            where: null,
+            groupby: null,
+            orderby: null,
+            limit: null
           },
           as: 'subSelect'
         }
@@ -142,7 +142,7 @@ describe('expression test',function(){
             } 
           } 
         },
-        as: '' 
+        as: null
       },
       { 
         expr: { 
@@ -154,7 +154,7 @@ describe('expression test',function(){
             } 
           }
         },
-        as: '' 
+        as: null
       }, 
       { 
         expr: { 
@@ -168,7 +168,7 @@ describe('expression test',function(){
             } 
           }
         },
-        as: '' 
+        as: null
       } 
     ]);
 
@@ -213,7 +213,7 @@ describe('expression test',function(){
         },
         paren: true 
       },
-      as: '' 
+      as: null
     }]);
 
   });
@@ -276,7 +276,7 @@ describe('expression test',function(){
         },
         paren: true 
       },
-      as: '' 
+      as: null
     }]);
 
   });
@@ -299,7 +299,7 @@ describe('expression test',function(){
           operator: '>',
           left: { 
             type: 'column_ref',
-            table: '',
+            table: null,
             column: 'c' 
           },
           right: { 
@@ -327,7 +327,7 @@ describe('expression test',function(){
       operator: 'IN',
       left:{ 
         type: 'column_ref',
-        table: '',
+        table: null,
         column: 'c' 
       },
       right: {
@@ -354,7 +354,7 @@ describe('expression test',function(){
       operator: 'IS',
       left:{ 
         type: 'column_ref',
-        table: '',
+        table: null,
         column: 'c' 
       },
       right: { type: 'null', value: null } 
@@ -372,7 +372,7 @@ describe('expression test',function(){
       operator: 'LIKE',
       left:{ 
         type: 'column_ref',
-        table: '',
+        table: null,
         column: 'c' 
       },
       right: { type: 'string', value: 'p' } 
@@ -390,7 +390,7 @@ describe('expression test',function(){
       operator: 'BETWEEN',
       left: { 
         type: 'column_ref',
-        table: '',
+        table: null,
         column: 'c' 
       },
       right: {
@@ -415,7 +415,7 @@ describe('expression test',function(){
       operator: '=',
       left: { 
         type: 'column_ref',
-        table: '',
+        table: null,
         column: 'c' 
       },
       right: { 
@@ -456,7 +456,7 @@ describe('expression test',function(){
           operator: '>',
           left: { 
             type: 'column_ref',
-            table: '',
+            table: null,
             column: 'c' 
           },
           right: {
@@ -472,7 +472,7 @@ describe('expression test',function(){
           operator: '>',
           left: { 
             type: 'column_ref',
-            table: '',
+            table: null,
             column: 'a' 
           },
           right: { type: 'number', value: 1 } 
@@ -495,7 +495,7 @@ describe('expression test',function(){
         operator: '=',
         left: { 
           type: 'column_ref',
-          table: '',
+          table: null,
           column: 'c' 
         },
         right: { 
@@ -510,7 +510,7 @@ describe('expression test',function(){
           operator: '>',
           left: { 
             type: 'column_ref',
-            table: '',
+            table: null,
             column: 'd' 
           },
           right: { 
@@ -523,7 +523,7 @@ describe('expression test',function(){
           operator: '<',
           left: { 
             type: 'column_ref',
-            table: '',
+            table: null,
             column: 'e' 
           },
           right: {
@@ -550,7 +550,7 @@ describe('expression test',function(){
           operator: '=',
           left: { 
             type: 'column_ref',
-            table: '',
+            table: null,
             column: 'c' 
           },
           right: { 
@@ -563,7 +563,7 @@ describe('expression test',function(){
           operator: '>',
           left: {
             type: 'column_ref',
-            table: '',
+            table: null,
             column: 'd'
           },
           right: { 
@@ -577,7 +577,7 @@ describe('expression test',function(){
         operator: '<',
         left: { 
           type: 'column_ref',
-          table: '',
+          table: null,
           column: 'e' 
         },
         right: { 
@@ -598,13 +598,13 @@ describe('expression test',function(){
       ast.columns.should.eql([{
         expr: {
           type: 'case',
-          expr: '',
+          expr: null,
           args: [{
             type: 'when',
             cond: {
               type: 'binary_expr',
               operator: '=',
-              left: { type: 'column_ref', table: '', column: 'a' },
+              left: { type: 'column_ref', table: null, column: 'a' },
               right: { type: 'number', value: 1 }
             },
             result: { type: 'string', value: 'one' }
@@ -613,13 +613,13 @@ describe('expression test',function(){
             cond: {
               type: 'binary_expr',
               operator: '=',
-              left: { type: 'column_ref', table: '', column: 'a' },
+              left: { type: 'column_ref', table: null, column: 'a' },
               right: { type: 'number', value: 2 }
             },
             result: { type: 'string', value: 'two' }
           }]
         },
-        as: ''
+        as: null
       }]);
     });
 
@@ -635,7 +635,7 @@ describe('expression test',function(){
             name: 'FUNC',
             args: {
               type: 'expr_list',
-              value: [{ type: 'column_ref', table: '', column: 'a' }]
+              value: [{ type: 'column_ref', table: null, column: 'a' }]
             }
           },
           args: [{
@@ -648,7 +648,7 @@ describe('expression test',function(){
             result: { type: 'string', value: 'two' }
           }]
         },
-        as: ''
+        as: null
       }]);
     });
 
@@ -659,7 +659,7 @@ describe('expression test',function(){
       ast.columns.should.eql([{
         expr: {
           type: 'case',
-          expr: { type: 'column_ref', table: '', column: 'a' },
+          expr: { type: 'column_ref', table: null, column: 'a' },
           args: [{
             type: 'when',
             cond: { type: 'number', value: 1 },
@@ -675,12 +675,12 @@ describe('expression test',function(){
               name: 'FUNC',
               args: {
                 type: 'expr_list',
-                value: [{ type: 'column_ref', table: '', column: 'a' }]
+                value: [{ type: 'column_ref', table: null, column: 'a' }]
               }
             }
           }]
         },
-        as: ''
+        as: null
       }]);
     });
   });
@@ -693,12 +693,12 @@ describe('expression test',function(){
       ast.columns.should.eql([{
         expr: {
           type: 'cast',
-          expr: { type: 'column_ref', table: '', column: 'col' },
+          expr: { type: 'column_ref', table: null, column: 'col' },
           target: {
             dataType: 'INTEGER'
           }
         },
-        as: ''
+        as: null
       }]);
     });
 
@@ -707,13 +707,13 @@ describe('expression test',function(){
       ast.columns.should.eql([{
         expr: {
           type: 'cast',
-          expr: { type: 'column_ref', table: '', column: 'col' },
+          expr: { type: 'column_ref', table: null, column: 'col' },
           target: {
             dataType: 'VARCHAR',
             length: 20
           }
         },
-        as: ''
+        as: null
       }]);
     });
 
@@ -722,12 +722,12 @@ describe('expression test',function(){
       ast.columns.should.eql([{
         expr: {
           type: 'cast',
-          expr: { type: 'column_ref', table: '', column: 'col' },
+          expr: { type: 'column_ref', table: null, column: 'col' },
           target: {
             dataType: 'SIGNED'
           }
         },
-        as: ''
+        as: null
       }]);
     });
   });

@@ -251,17 +251,17 @@ join_op
 table_name 
   = dt:ident tail:(__ DOT __ ident_name)? {
       var obj = {
-        db : '',
+        db : null,
         table : dt
-      }
-      if (tail != '') {
+      };
+      if (tail !== null) {
         obj.db = dt;
         obj.table = tail[3];
       } 
       return obj;
     }
     /v:var_decl {
-      v.db = '';
+      v.db = null;
       v.table = v.name;
       return v;
     }
@@ -310,7 +310,7 @@ number_or_param
 limit_clause
   = KW_LIMIT __ i1:(number_or_param) __ tail:(COMMA __ number_or_param)? {
       var res = [i1];
-      if (tail == '') {
+      if (tail === null) {
         res.unshift({
           type  : 'number',
           value : 0
@@ -416,7 +416,7 @@ case_expr
       if (otherwise) condition_list.push(otherwise);
       return {
         type: 'case',
-        expr: expr || '',
+        expr: expr || null,
         args: condition_list
       };
     }
@@ -473,7 +473,7 @@ not_expr
 
 comparison_expr
   = left:additive_expr __ rh:comparison_op_right? {
-      if (rh == '') {
+      if (rh === null) {
         return left;  
       } else {
         var res = null;
@@ -634,7 +634,7 @@ column_ref
   / col:column { 
       return {
         type  : 'column_ref',
-        table : '', 
+        table : null,
         column: col
       };
     }
@@ -878,7 +878,7 @@ hexDigit
   = [0-9a-fA-F]
 
 e
-  = e:[eE] sign:[+-]? { return e + sign; }
+  = e:[eE] sign:[+-]? { return e + (sign !== null ? sign : ''); }
 
 
 KW_NULL     = "NULL"i     !ident_start 

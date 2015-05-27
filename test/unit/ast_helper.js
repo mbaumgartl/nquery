@@ -21,9 +21,9 @@ describe('ast helper test', function(){
     // inspect(cols);
     cols.should.eql([ 
       { type: 'column_ref', table: 'a', column: 'c' },
-      { type: 'column_ref',table: '',column: 'b' },
-      { type: 'column_ref',table: '',column: 'd' },
-      { type: 'column_ref',table: '',column: 'e' } 
+      { type: 'column_ref',table: null,column: 'b' },
+      { type: 'column_ref',table: null,column: 'd' },
+      { type: 'column_ref',table: null,column: 'e' }
     ]);
   });
 
@@ -207,7 +207,7 @@ describe('ast helper test', function(){
     var e, r;
     e = {
       type : 'aggr_func',
-      name : '',
+      name : null,
       args : {
         expr : {
           value :[1,2, 3]
@@ -240,7 +240,7 @@ describe('ast helper test', function(){
     var e, r;
     e = {
       type : 'function',
-      name : '',
+      name : null,
       args : [1,2, 3]
     };
 

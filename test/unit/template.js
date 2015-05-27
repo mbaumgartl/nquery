@@ -18,7 +18,7 @@ describe('template test',function(){
     //inspect(east);
     ast.should.eql({
         type: 'select',
-        distinct: '',
+        distinct: null,
         columns: [ 
           { 
             expr: { 
@@ -29,7 +29,7 @@ describe('template test',function(){
                 operator: 'NOT CONTAINS',
                 left: { 
                   type: 'column_ref',
-                  table: '',
+                  table: null,
                   column: 'a'
                 },
                 right:{ 
@@ -47,7 +47,7 @@ describe('template test',function(){
                 operator: '=',
                 left: { 
                   type: 'column_ref',
-                  table: '',
+                  table: null,
                   column: 'c' 
                 },
                 right: { 
@@ -61,14 +61,14 @@ describe('template test',function(){
               },
               paren: true 
             },
-            as: '' 
+            as: null
           } 
         ],
-        from: '',
-        where: '',
-        groupby: '',
-        orderby: '',
-        limit: '' 
+        from: null,
+        where: null,
+        groupby: null,
+        orderby: null,
+        limit: null
     });
 
     sql = 'select ( a NOT CONTAINS (:id, 1) AND c = :name)';
@@ -88,7 +88,7 @@ describe('template test',function(){
             operator: 'NOT CONTAINS',
             left: {
               type: 'column_ref',
-              table: '',
+              table: null,
               column: 'a' 
             },
             right: {
@@ -106,7 +106,7 @@ describe('template test',function(){
             operator: '=',
             left: { 
               type: 'column_ref',
-              table: '',
+              table: null,
               column: 'c' 
             },
             right:  { 
@@ -119,7 +119,7 @@ describe('template test',function(){
           },
           paren: true 
         },
-        as: '' 
+        as: null
       } 
     ]);
 
@@ -145,7 +145,7 @@ describe('template test',function(){
     ast.where.should.eql( {
       type: 'binary_expr',
       operator : 'NOT CONTAINS',
-      left     : {type : 'column_ref', table : '', column : 'p'},
+      left     : {type : 'column_ref', table : null, column : 'p'},
       right    : {
         type : 'expr_list',
         value : [
@@ -163,7 +163,7 @@ describe('template test',function(){
     ast.where.should.eql( {
       type: 'binary_expr',
       operator : 'BETWEEN',
-      left     : {type : 'column_ref', table : '', column : 'p'},
+      left     : {type : 'column_ref', table : null, column : 'p'},
       right    :  {
         type : 'expr_list',
         value : [

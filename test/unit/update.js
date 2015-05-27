@@ -33,7 +33,7 @@ describe('update test',function(){
             operator: '+',
             left: { 
               type: 'column_ref',
-              table: '',
+              table: null,
               column: 'login_count' 
             },
             right: { 
@@ -47,7 +47,7 @@ describe('update test',function(){
         operator: '=',
         left: { 
           type: 'column_ref',
-          table: '',
+          table: null,
           column: 'id' 
         },
         right: { 

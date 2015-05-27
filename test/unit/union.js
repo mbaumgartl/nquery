@@ -13,26 +13,26 @@ describe('union test',function(){
 
     ast.should.eql({ 
       type: 'select',
-      distinct: '',
+      distinct: null,
       columns: [ 
-        { expr: { type: 'number', value: 1 },as: '' } 
+        { expr: { type: 'number', value: 1 }, as: null }
       ],
-      from: '',
-      where: '',
-      groupby: '',
-      orderby: '',
-      limit: '',
+      from: null,
+      where: null,
+      groupby: null,
+      orderby: null,
+      limit: null,
       _next: { 
         type: 'select',
-        distinct: '',
+        distinct: null,
         columns: [ 
-          { expr: { type: 'bool', value: true }, as: '' } 
+          { expr: { type: 'bool', value: true }, as: null }
         ],
-        from: '',
-        where: '',
-        groupby: '',
-        orderby: '',
-        limit: ''
+        from: null,
+        where: null,
+        groupby: null,
+        orderby: null,
+        limit: null
       } 
     });
   })

@@ -11,7 +11,7 @@ describe('orderby  test', function(){
 
   it('basic test', function() {
     var rawData = { 
-      columns: [[{table : '', column : 'id'}], [{table : '', column : 'sex'}]],
+      columns: [[{table : null, column : 'id'}], [{table : null, column : 'sex'}]],
       data: [ 
         [ 3, 'a' ], 
         [ 4, 'f' ], 
@@ -25,7 +25,7 @@ describe('orderby  test', function(){
         {
           expr : {
             type: 'column_ref', 
-            table : '',
+            table : null,
             column : 'sex'
           },
           type : 'ASC'
@@ -33,7 +33,7 @@ describe('orderby  test', function(){
         {
           expr : {
             type: 'column_ref', 
-            table : '',
+            table : null,
             column : 'id'
           },
           type : 'DESC'
@@ -42,8 +42,8 @@ describe('orderby  test', function(){
     };
     var sp = new AstReader(ast);
     var ed = doOrderby(rawData, [
-      {name : {table : '', column : 'sex'}, type : 'ASC'},
-      {name : {table : '', column : 'id'},  type : 'DESC'}
+      {name : {table : null, column : 'sex'}, type : 'ASC'},
+      {name : {table : null, column : 'id'},  type : 'DESC'}
     ]);
     //inspect(ed);
     ed.data.should.eql([ 

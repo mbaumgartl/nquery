@@ -14,23 +14,23 @@ describe('select test',function(){
     ast = Parser.parse(sql);
 
     ast.columns.length.should.eql(1);
-    ast.distinct.should.eql('');
-    ast.where.should.eql('');
-    ast.from.should.eql('');
-    ast.groupby.should.eql('');
-    ast.orderby.should.eql('');
-    ast.limit.should.eql('');
+    should(ast.distinct).eql(null);
+    should(ast.where).eql(null);
+    should(ast.from).eql(null);
+    should(ast.groupby).eql(null);
+    should(ast.orderby).eql(null);
+    should(ast.limit).eql(null);
 
 
     sql = "SELECT DISTINCT a FROM b WHERE c = 0 GROUP BY d ORDER BY e limit 3";
     ast = Parser.parse(sql);
 
     ast.distinct.should.eql('DISTINCT');
-    ast.from.should.not.eql('');
-    ast.where.should.not.eql('');
-    ast.groupby.should.not.eql('');
-    ast.orderby.should.not.eql('');
-    ast.limit.should.not.eql('');
+    should(ast.from).not.eql(null);
+    ast.where.should.not.eql(null);
+    ast.groupby.should.not.eql(null);
+    ast.orderby.should.not.eql(null);
+    ast.limit.should.not.eql(null);
   });   
 
   it('limit test', function() {
@@ -55,7 +55,7 @@ describe('select test',function(){
 
     //inspect(ast);
     ast.groupby.should.eql([
-      { type: 'column_ref', table: '', column: 'd' },
+      { type: 'column_ref', table: null, column: 'd' },
       { type: 'column_ref', table: 't', column: 'b' },
       { type: 'column_ref', table: 't', column: 'c' }
     ]);
@@ -69,15 +69,15 @@ describe('select test',function(){
 
     inspect(ast.orderby);
     ast.orderby.should.eql([
-      { expr: { type: 'column_ref', table: '', column: 'd' },type: 'ASC' },
-      { expr: { type: 'column_ref', table: 't', column: 'b' },type: 'DESC' },
-      { expr: { type: 'column_ref', table: 't', column: 'c' },type: 'ASC' },
+      { expr: { type: 'column_ref', table: null, column: 'd' },  type: 'ASC' },
+      { expr: { type: 'column_ref', table: 't', column: 'b' }, type: 'DESC' },
+      { expr: { type: 'column_ref', table: 't', column: 'c' }, type: 'ASC' },
       {   
         expr: { 
             type: 'aggr_func',   
             name: 'SUM', 
             args: {
-              expr: { type: 'column_ref', table: '', column: 'e' } 
+              expr: { type: 'column_ref', table: null, column: 'e' }
             }
         },
         type: 'ASC'
@@ -97,7 +97,7 @@ describe('select test',function(){
 
     //inspect(ast);
     ast.columns.should.eql([
-      { expr: { type: 'column_ref', table: '', column: 'a' }, as: 'aa' },
+      { expr: { type: 'column_ref', table: null, column: 'a' }, as: 'aa' },
       { expr: { type: 'column_ref', table: 'b', column: 'c' },  as: 'bc' },
       { 
         expr: { 
@@ -105,10 +105,10 @@ describe('select test',function(){
           name: 'fun', 
           args: {
             type  : 'expr_list',  
-            value : [ { type: 'column_ref', table: '', column: 'd' } ]
+            value : [ { type: 'column_ref', table: null, column: 'd' } ]
           }
         },
-        as: '' 
+        as: null
       },
       { 
         expr: { 
@@ -123,7 +123,7 @@ describe('select test',function(){
             value : 3
           }
         },
-        as: '' 
+        as: null
       } 
     ]);
    
@@ -189,7 +189,7 @@ describe('select test',function(){
 
     //inspect(ast.from);
     ast.from.should.eql([ 
-      { db: '', table: 't', as: '' },
+      { db: null, table: 't', as: null },
       { db: 'a', table: 'b', as: 'b' },
       { db: 'c', table: 'd', as: 'cd' } 
     ]);
@@ -200,7 +200,7 @@ describe('select test',function(){
 
     //inspect(ast.from);
     ast.from.should.eql([ 
-      { db: '', table: 't', as: '' },
+      { db: null, table: 't', as: null },
       { 
         db: 'a',
         table: 'b',
@@ -222,9 +222,9 @@ describe('select test',function(){
         } 
       },
       { 
-        db: '',
+        db: null,
         table: 'd',
-        as: '',
+        as: null,
         join: 'LEFT JOIN',
         on: { 
           type: 'binary_expr',
@@ -252,7 +252,7 @@ describe('select test',function(){
       ast = Parser.parse(sql);
       ast.options.should.be.instanceof(Array);
       ast.columns.should.eql([
-        { expr: { type: 'column_ref', table: '', column: 'col' }, as: '' }
+        { expr: { type: 'column_ref', table: null, column: 'col' }, as: null }
       ]);
       ast.options.should.containEql('SQL_CALC_FOUND_ROWS');
     });
