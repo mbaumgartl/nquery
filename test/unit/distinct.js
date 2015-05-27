@@ -11,7 +11,7 @@ var distinct    = require('../../base/distinct');
 
 var AstReader   = require('../../lib/ast_helper').Reader;
 
-describe('disticnt test', function() {
+describe('distinct test', function() {
 
   it('basic distinct test', function() {
     var data = {
