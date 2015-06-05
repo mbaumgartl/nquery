@@ -102,19 +102,17 @@
 }
 
 start 
-  = &init __ ast:(union_stmt  / update_stmt / replace_insert_stmt) {
+  = &{ params = []; return true; } ast:(union_stmt  / update_stmt / replace_insert_stmt) {
       return {
         ast   : ast,
         param : params
       };
     } 
-    /ast:proc_stmts {
+  / ast:proc_stmts {
       return {
         ast : ast  
       };
     }
-
-init  = { params = []; return true; }
 
 union_stmt
   = head:select_stmt tail:(__ KW_UNION __ select_stmt)* {
@@ -388,23 +386,10 @@ value_item
 
 //for template auto fill
 expr_list
-  = head:expr tail:(__ COMMA __ expr)*{
-      var el = {
-        type : 'expr_list'  
-      };
-      var l = createExprList(head, tail, el); 
-
-      el.value = l;
+  = head:expr tail:(__ COMMA __ expr)* {
+      var el = { type : 'expr_list' };
+      el.value = createExprList(head, tail, el);
       return el;
-    }
-
-expr_list_or_empty
-  = l:expr_list 
-  / { 
-      return { 
-        type  : 'expr_list',
-        value : []
-      };
     }
 
 case_expr
@@ -748,11 +733,11 @@ star_expr
     }
 
 func_call
-  = name:ident __ LPAREN __ l:expr_list_or_empty __ RPAREN {
+  = name:ident __ LPAREN __ l:expr_list? __ RPAREN {
       return {
         type : 'function',
         name : name, 
-        args : l
+        args : l ? l : { type: 'expr_list', value: [] }
       };
     }
 
@@ -1011,14 +996,12 @@ proc_stmts
   = proc_stmt* 
 
 proc_stmt 
-  = &proc_init __ s:(assign_stmt / return_stmt) {
+  = &{ varList = []; return true; } __ s:(assign_stmt / return_stmt) {
       return {
         stmt : s,
         vars: varList
       };
     }
-
-proc_init  = { varList = []; return true; }
 
 assign_stmt 
   = va:var_decl __ KW_ASSIGN __ e:proc_expr {
