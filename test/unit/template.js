@@ -257,7 +257,89 @@ describe('template test',function(){
         { type: 'number', value: 100 } 
       ] 
     }]);
-  })
+  });
 
-})
+  describe('AST template/parameter replacement', function () {
+    it('replaces single parameter', function () {
+      var sql, ast;
 
+      sql = 'SELECT col FROM t WHERE id = :id';
+      ast = Parser.parse(sql);
+      ast = Parser.bind(ast, { id: 1 });
+
+      ast.where.should.eql({
+        type: 'binary_expr',
+        operator: '=',
+        left: {
+          type: 'column_ref',
+          table: null,
+          column: 'id'
+        },
+        right: {
+          type: 'number',
+          value: 1
+        }
+      });
+    });
+
+    it('replaces multiple parameters', function () {
+      var sql, ast;
+
+      sql = 'SELECT col FROM t WHERE id = :id AND type = :type';
+      ast = Parser.parse(sql);
+      ast = Parser.bind(ast, { id: 1, type: 'foobar' });
+
+      ast.where.should.eql({
+        type: 'binary_expr',
+        operator: 'AND',
+        left: {
+          type: 'binary_expr',
+          operator: '=',
+          left: {
+            type: 'column_ref',
+            table: null,
+            column: 'id'
+          },
+          right: {
+            type: 'number',
+            value: 1
+          }
+        },
+        right: {
+          type: 'binary_expr',
+          operator: '=',
+          left: {
+            type: 'column_ref',
+            table: null,
+            column: 'type'
+          },
+          right: {
+            type: 'string',
+            value: 'foobar'
+          }
+        }
+      });
+    });
+
+    it('throws exception if no value for template/parameter is available', function () {
+      var sql, ast;
+
+      sql = 'SELECT col FROM t WHERE id = :id';
+      ast = Parser.parse(sql);
+
+      (function () {
+        Parser.bind(ast, { foo: 'bar' });
+      }).should.throw(/not instantiated :id/);
+    });
+
+    it('returns new AST object', function () {
+      var sql, paramAST, ast;
+
+      sql = 'SELECT col FROM t WHERE id = :id';
+      paramAST = Parser.parse(sql);
+      ast = Parser.bind(paramAST, { id: 1 });
+
+      ast.should.not.equal(paramAST);
+    });
+  });
+});
