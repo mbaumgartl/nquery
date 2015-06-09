@@ -175,13 +175,11 @@ describe('template test',function(){
   });
 
   it('error test', function(){
-    var sql, ast;
-    sql = 'select (a in (1) And b NOT CONTAINS (:id, 1))';
-    try{
-      ast = Parser.tplParse(sql, {name : 'hello'});
-    } catch(e) {
-      e.message.should.containEql('not instantiated :id');
-    }
+    var sql = 'select (a in (1) And b NOT CONTAINS (:id, 1))';
+
+    (function () {
+      Parser.tplParse(sql, {name : 'hello'});
+    }).should.throw(/not instantiated :id/);
   });
 
   it('update template ', function(){

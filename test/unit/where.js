@@ -52,12 +52,10 @@ describe('where filter test', function(){
     var e = createBinaryExpr('=', {type : 'column_ref', column : 'nid'}, 3);
     //sm.where('a.id',WHERE.EQ, 3);
     //inspect(e);
-    try{
-      var res = filter(rawData, e); 
-    }catch(e) {
-      e.message.should.containEql('no column found for :nid');
-    }
-    should.not.exist(res);
+
+    (function () {
+      filter(rawData, e);
+    }).should.throw(/no column found for :nid/);
   });
 
   it('all scan ', function(){

@@ -33,11 +33,10 @@ describe('extractor test',function(){
     sql = "select * from a where id = 2 OR nid = 2";
     ast = Parser.parse(sql);
     inspect(ast);
-    try {
-      info = Extractor.getKeyInfo(ast.where, options);
-    } catch(e) {
-      e.message.should.containEql('primary keys not ful-filled');
-    }
+
+    (function () {
+      Extractor.getKeyInfo(ast.where, options);
+    }).should.throw(/primary keys not ful-filled/);
   });   
 
   it('single-key and link test', function() {
